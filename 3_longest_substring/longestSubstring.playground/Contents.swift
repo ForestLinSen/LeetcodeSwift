@@ -1,8 +1,6 @@
 import Cocoa
 
 
-
-
 // Version 2: hash table O(N)
 func lengthOfLongestSubstring(_ s: String) -> Int {
     
