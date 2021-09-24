@@ -1,7 +1,7 @@
 // course url: https://www.youtube.com/watch?v=oBt53YbR9Kk
 import Cocoa
 
-// Part 1: Memorization
+// ### Part 1: Memorization ###
 
 // 1.1 Fibonacci
 struct Dynamic_fib{
@@ -42,7 +42,7 @@ struct Dynamic_fib{
 }
 
 
-Dynamic_fib.dynamic_fib(50)
+Dynamic_fib.dynamic_fib(18)
 
 
 // 1.2 gridTraveler
@@ -82,8 +82,72 @@ struct Dynamic_gridTraveler{
     }
 }
 
-Dynamic_gridTraveler.dynamic_gridTraveler(42,20)
-//Dynamic_gridTraveler.normal_gridTraveler(20,20)
+Dynamic_gridTraveler.dynamic_gridTraveler(15,20)
+
+// 1.3 Memorization recipe
+/// 1) make it work
+///     * visualize the problem as tree
+///     * implement the tree using recursion
+///     * test is
+/// 2) make it efficient
+///     * add a memo object
+///     * add a base case to reutrn memo value
+///     * store return values into the memo
 
 
-// Part 2: Tabulation
+// 1.4 canSum
+
+struct CanSum{
+    
+    // 1.4.1 normal recurrsive function
+    // time complexity: O(n^m)  ( n: array.count; m: target )
+    static func normal_canSum(_ target: Int, _ array: [Int]) -> Bool{
+        
+        if(target == 0){return true}
+        if(target < 0){return false}
+        
+        for num in array{
+            let remainder = target - num
+            if normal_canSum(remainder, array){
+                return true
+            }
+        }
+        
+        /// if any of the value become true we return true
+        /// else we return false
+        return false
+        
+    }
+    
+    // 1.4.2 dynamic function with memorization
+    static var memo = [Int: Bool]()
+    
+    static func dynamic_canSum(_ target: Int, _ array: [Int]) -> Bool{
+        
+        if let canSum = memo[target]{
+            return canSum
+        }
+        
+        if(target == 0){return true}
+        if(target < 0){return false}
+        
+        for num in array{
+            
+            let reminder = target - num
+            
+            if(dynamic_canSum(reminder, array)){
+                memo[reminder] = dynamic_canSum(reminder, array)
+                return memo[reminder]!
+            }
+   
+        }
+        
+        memo[target] = false
+        return false
+        
+    }
+}
+
+CanSum.dynamic_canSum(2000, [11,16])
+
+// ### Part 2: Tabulation ###
