@@ -82,7 +82,7 @@ struct Dynamic_gridTraveler{
     }
 }
 
-Dynamic_gridTraveler.dynamic_gridTraveler(15,20)
+Dynamic_gridTraveler.dynamic_gridTraveler(12,5)
 
 // 1.3 Memorization recipe
 /// 1) make it work
@@ -96,7 +96,6 @@ Dynamic_gridTraveler.dynamic_gridTraveler(15,20)
 
 
 // 1.4 canSum
-
 struct CanSum{
     
     // 1.4.1 normal recurrsive function
@@ -148,6 +147,34 @@ struct CanSum{
     }
 }
 
-CanSum.dynamic_canSum(2000, [11,16])
+CanSum.dynamic_canSum(151, [11,16])
+
+
+// 1.5 How sum
+
+struct HowSum{
+    static func normal_howsum(_ target: Int, _ array: [Int]) -> [Int]? {
+        
+        if(target == 0){return []}
+        if(target < 0){return nil}
+        
+        for num in array{
+            let remainder = target - num
+            
+            var result = normal_howsum(remainder, array)
+            
+            // add the edge
+            if(result != nil){
+                result?.append(num)
+                return result
+            }
+        }
+        
+        return nil
+    }
+}
+
+HowSum.normal_howsum(12, [10, 1])
+
 
 // ### Part 2: Tabulation ###
