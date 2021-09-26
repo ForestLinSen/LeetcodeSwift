@@ -213,6 +213,8 @@ HowSum.dynamic_howsum(15, [7,2])
 
 // 1.5 Best sum
 struct BestSum{
+    // time complexity: O(n^m * m)
+    // space: O(m^2)
     static func normal_bestSum(_ target: Int, _ array: [Int]) -> [Int]?{
         if(target == 0){return []}
         if(target < 0){return nil}
@@ -233,9 +235,42 @@ struct BestSum{
          
         return bestSum
     }
+    
+    // dynamic bestSum
+    // time complexity: O(m*n * m) = O(m^2*n)
+    // space: O(n^2)
+    static var memo = [Int: [Int]]()
+    static func dynamic_bestSum(_ target: Int, _ array: [Int]) -> [Int]?{
+        if let result = memo[target] {return result}
+        if(target == 0){return []}
+        if(target < 0){return nil}
+        
+        var bestSum: [Int]? = nil
+        
+        for num in array{
+            let remainder = target - num
+            var currentResult = dynamic_bestSum(remainder, array)
+            
+            // possible
+            if(currentResult != nil){
+                currentResult?.append(num)
+                
+                if(bestSum == nil || currentResult!.count < bestSum!.count){
+                    bestSum = currentResult
+                }
+            }
+        }
+        
+        memo[target] = bestSum
+        
+        
+        return bestSum
+    }
 }
 
-BestSum.normal_bestSum(15, [3,2])
+BestSum.dynamic_bestSum(35, [8,3,2])
+//BestSum.normal_bestSum(35, [8,3,2])
+
 
 
 // ### Part 2: Tabulation ###
