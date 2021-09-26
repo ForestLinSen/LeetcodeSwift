@@ -271,6 +271,30 @@ struct BestSum{
 BestSum.dynamic_bestSum(35, [8,3,2])
 //BestSum.normal_bestSum(35, [8,3,2])
 
+struct CanConstruct{
+    static func normal_canConstruct(_ target: String, _ wordBank: [String]) -> Bool{
+        if(target == ""){return true}
+        
+        for word in wordBank{
+            if(target.prefix(word.count) == word){
+                let suffix = target.suffix(target.count - word.count)
+                if(normal_canConstruct(String(suffix), wordBank)){
+                    return true
+                }
+            }
+        }
+        
+        return false
+    }
+}
 
+CanConstruct.normal_canConstruct("abc", ["ab", "c"])
+CanConstruct.normal_canConstruct("acb", ["ab", "c"])
 
 // ### Part 2: Tabulation ###
+
+
+let s = "hello"
+s.suffix(3)
+
+
