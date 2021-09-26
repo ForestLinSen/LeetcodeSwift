@@ -272,6 +272,9 @@ BestSum.dynamic_bestSum(35, [8,3,2])
 //BestSum.normal_bestSum(35, [8,3,2])
 
 struct CanConstruct{
+    
+    // time complexity: O(n^m * m)
+    // space complexity: O(m^2)
     static func normal_canConstruct(_ target: String, _ wordBank: [String]) -> Bool{
         if(target == ""){return true}
         
@@ -286,15 +289,42 @@ struct CanConstruct{
         
         return false
     }
+    
+    
+    // dynamic programming
+    // time complexity: O(n*m^2)
+    // space complexity: O(m^2)
+    static var memo = [String: Bool]()
+    static func dynamic_canConstruct(_ target: String, _ wordBank: [String]) -> Bool{
+        if let result = memo[target] {return result}
+        if(target == ""){return true}
+        
+        for word in wordBank{
+            if(target.prefix(word.count) == word){
+                memo[target] = true
+                
+                let suffix = target.suffix(target.count - word.count)
+                if(dynamic_canConstruct(String(suffix), wordBank)){
+                    memo[String(suffix)] = true
+                    return true
+                }
+            }
+        }
+        
+        return false
+    }
 }
 
-CanConstruct.normal_canConstruct("abc", ["ab", "c"])
-CanConstruct.normal_canConstruct("acb", ["ab", "c"])
+
+CanConstruct.dynamic_canConstruct("programming", ["d", "ro", "ter", "as","p", "or", "ming", "gra", "m"])
+CanConstruct.normal_canConstruct("programming", ["d", "ro", "ter", "as","p", "or", "ming", "gra", "m"])
+
+CanConstruct.dynamic_canConstruct("eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeef", ["e", "ee", "eee", "eeee", "eeeee"])
+//CanConstruct.normal_canConstruct("eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeef", ["e", "ee", "eee", "eeee", "eeeee"])
+
+
 
 // ### Part 2: Tabulation ###
 
-
-let s = "hello"
-s.suffix(3)
 
 
