@@ -153,6 +153,9 @@ CanSum.dynamic_canSum(151, [11,16])
 // 1.5 How sum
 
 struct HowSum{
+    
+    // normal solution
+    // time complexity: O(n^m * m) -- cause we need copy the array every time
     static func normal_howsum(_ target: Int, _ array: [Int]) -> [Int]? {
         
         if(target == 0){return []}
@@ -172,9 +175,67 @@ struct HowSum{
         
         return nil
     }
+    
+    // dynamic programming
+    // time complexity: O(n*m^2)
+    // space: O(m*m)
+    static var memo = [Int: [Int]]()
+    static func dynamic_howsum(_ target: Int, _ array: [Int]) -> [Int]?{
+        
+        if(memo[target] != nil) {return memo[target]}
+        if(target == 0){return []}
+        if(target < 0){return nil}
+        
+        for num in array{
+            let remainder = target - num
+            let previousResult = dynamic_howsum(remainder, array)
+            
+            if(previousResult != nil){
+                
+                if(memo[target] == nil) {memo[target] = []}
+                
+                memo[target]!.append(contentsOf: previousResult!)
+                memo[target]!.append(num)
+
+                return memo[target]
+            }
+        }
+        
+        memo[target] = nil
+        
+        return memo[target]
+    }
 }
 
-HowSum.normal_howsum(12, [10, 1])
+//HowSum.normal_howsum(12, [10, 1])
+HowSum.dynamic_howsum(15, [7,2])
+
+
+// 1.5 Best sum
+struct BestSum{
+    static func normal_bestSum(_ target: Int, _ array: [Int]) -> [Int]?{
+        if(target == 0){return []}
+        if(target < 0){return nil}
+        
+        var bestSum: [Int]? = nil
+        
+        for num in array{
+            let remainder = target - num
+            var currentResult = normal_bestSum(remainder, array)
+            
+            if(currentResult != nil){
+                currentResult?.append(num)
+                if(bestSum == nil || currentResult!.count < bestSum!.count){
+                    bestSum = currentResult
+                }
+            }
+        }
+         
+        return bestSum
+    }
+}
+
+BestSum.normal_bestSum(15, [3,2])
 
 
 // ### Part 2: Tabulation ###
