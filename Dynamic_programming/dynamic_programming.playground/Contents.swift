@@ -286,7 +286,6 @@ struct CanConstruct{
                 }
             }
         }
-        
         return false
     }
     
@@ -303,6 +302,7 @@ struct CanConstruct{
             if(target.prefix(word.count) == word){
                 memo[target] = true
                 
+                // target: hello; prefix: hel; suffix: lo
                 let suffix = target.suffix(target.count - word.count)
                 if(dynamic_canConstruct(String(suffix), wordBank)){
                     memo[String(suffix)] = true
@@ -316,13 +316,31 @@ struct CanConstruct{
 }
 
 
-CanConstruct.dynamic_canConstruct("programming", ["d", "ro", "ter", "as","p", "or", "ming", "gra", "m"])
-CanConstruct.normal_canConstruct("programming", ["d", "ro", "ter", "as","p", "or", "ming", "gra", "m"])
-
-CanConstruct.dynamic_canConstruct("eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeef", ["e", "ee", "eee", "eeee", "eeeee"])
-//CanConstruct.normal_canConstruct("eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeef", ["e", "ee", "eee", "eeee", "eeeee"])
+CanConstruct.dynamic_canConstruct("enterapotentpot", ["a", "p", "ent", "enter", "ot", "o", "t"])
 
 
+struct CountConstruct{
+    static func normal_countConstruct(_ target: String, _ wordBank: [String]) -> Int{
+        if(target == ""){return 1}
+        
+        var totalCount = 0
+        
+        for word in wordBank{
+            if(target.prefix(word.count) == word){
+                let suffix = String(target.suffix(target.count - word.count))
+                let result = normal_countConstruct(suffix, wordBank)
+                
+                totalCount += result
+
+            }
+        }
+
+        return totalCount
+    }
+}
+
+CountConstruct.normal_countConstruct("enterapotentpot", ["a", "p", "ent", "enter", "ot", "o", "t"])
+//CountConstruct.normal_countConstruct("eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeef", ["e", "ee", "eee", "eeee", "eeeee"])
 
 // ### Part 2: Tabulation ###
 
