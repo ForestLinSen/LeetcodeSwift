@@ -4,7 +4,7 @@ import Cocoa
 // ### Part 1: Memorization ###
 
 // 1.1 Fibonacci
-struct Dynamic_fib{
+struct DynamicFib{
     
     // 1.1.1 fibonacci number: normal recurrsion
     /// Time complexity: O(2^N)
@@ -42,14 +42,14 @@ struct Dynamic_fib{
 }
 
 
-Dynamic_fib.dynamic_fib(18)
+DynamicFib.dynamic_fib(18)
 
 
 // 1.2 gridTraveler
 /// down -> func(2, 3) becomes (1, 3)
 /// right -> func(2, 3) becomes (2, 2)
 
-struct Dynamic_gridTraveler{
+struct DynamicGridTraveler{
     static func normal_gridTraveler(_ m: Int, _ n: Int) -> Int{
         
         if(m == 0 || n == 0){
@@ -82,7 +82,7 @@ struct Dynamic_gridTraveler{
     }
 }
 
-Dynamic_gridTraveler.dynamic_gridTraveler(12,5)
+DynamicGridTraveler.dynamic_gridTraveler(12,5)
 
 // 1.3 Memorization recipe
 /// 1) make it work
@@ -320,6 +320,9 @@ CanConstruct.dynamic_canConstruct("enterapotentpot", ["a", "p", "ent", "enter", 
 
 
 struct CountConstruct{
+    
+    // time complexity: O(n^m * m)
+    // space complexity: O(m^2)
     static func normal_countConstruct(_ target: String, _ wordBank: [String]) -> Int{
         if(target == ""){return 1}
         
@@ -334,15 +337,63 @@ struct CountConstruct{
 
             }
         }
-
+        return totalCount
+    }
+    
+    // dynamic programming solution
+    // time complexity: O(n*m^2)
+    // space complexity: O(m^2)
+    static var memo = [String: Int]()
+    static func dynamic_countConstruct(_ target: String, _ wordBank: [String]) -> Int{
+        if let r = memo[target] {return r}
+        if(target == ""){return 1}
+        
+        var totalCount = 0
+        
+        for word in wordBank{
+            if(target.prefix(word.count) == word){
+                let suffix = String(target.suffix(target.count - word.count))
+                let result = dynamic_countConstruct(suffix, wordBank)
+                totalCount += result
+            }
+        }
+        
+        memo[target] = totalCount
+        
         return totalCount
     }
 }
 
-CountConstruct.normal_countConstruct("enterapotentpot", ["a", "p", "ent", "enter", "ot", "o", "t"])
-//CountConstruct.normal_countConstruct("eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeef", ["e", "ee", "eee", "eeee", "eeeee"])
+CountConstruct.dynamic_countConstruct("enterapotentpot", ["a", "p", "ent", "enter", "ot", "o", "t"])
+//CountConstruct.dynamic_countConstruct("eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee", ["e", "ee", "eee", "eeee", "eeeee"])
+
+
+struct AllConstruct{
+    
+    static func oneConstruct(_ target: String, _ wordBank: [String]) -> [String]?{
+        if(target == ""){return []}
+        
+        var result: [String]? = nil
+        
+        for word in wordBank{
+            if(target.prefix(word.count) == word){
+                let suffix = String(target.suffix(target.count - word.count))
+                var returnValue = oneConstruct(suffix, wordBank)
+                
+                if(returnValue != nil){
+                    returnValue?.insert(word, at: 0)
+                    result = returnValue
+                }
+            }
+        }
+        
+        return result
+    }
+
+}
+
+AllConstruct.oneConstruct("enterapotentpot", ["a", "p", "ent", "enter", "ot", "o", "t"])
+//AllConstruct.oneConstruct("abcd", ["a", "cb", "abc", "c", "d"])
 
 // ### Part 2: Tabulation ###
-
-
 
