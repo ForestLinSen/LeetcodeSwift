@@ -386,14 +386,64 @@ struct AllConstruct{
                 }
             }
         }
+        return result
+    }
+    
+    static func allConstruct(_ target: String, _ wordBank: [String]) -> [[String]]?{
+        if(target == ""){return [[]]}
+        
+        var result: [[String]]? = []
+        
+        for word in wordBank{
+            if(target.hasPrefix(word)){
+                let suffix = String(target.suffix(target.count - word.count))
+                let returnValue = allConstruct(suffix, wordBank)?.map({ s -> [String] in
+                    var tmp = s
+                    tmp.insert(word, at: 0)
+                    return tmp
+                })
+                
+                returnValue?.forEach({ s in
+                    result?.append(s)
+                })
+            }
+        }
         
         return result
+    }
+    
+    // DP solution for allConstruct
+    // O(n^m) time
+    static var memo = [String: [[String]]]()
+    static func dynamic_allConstruct(_ target: String, _ wordBank: [String]) -> [[String]]?{
+        if let r = memo[target] {return r}
+        if(target == "") {return [[]]}
+        
+        for word in wordBank{
+            if(target.hasPrefix(word)){
+                let suffix = String(target.suffix(target.count - word.count))
+                let returnValue = dynamic_allConstruct(suffix, wordBank)?.map({ s -> [String] in
+                    var tmp = s
+                    tmp.insert(word, at: 0)
+                    return tmp
+                })
+                
+                returnValue?.forEach({ s in
+                    if(memo[target] == nil){memo[target] = []}
+                    memo[target]?.append(s)
+                })
+            }
+        }
+        
+        return memo[target]
     }
 
 }
 
-AllConstruct.oneConstruct("enterapotentpot", ["a", "p", "ent", "enter", "ot", "o", "t"])
-//AllConstruct.oneConstruct("abcd", ["a", "cb", "abc", "c", "d"])
+//AllConstruct.oneConstruct("enterapotentpot", ["a", "p", "ent", "enter", "ot", "o", "t"])
+//AllConstruct.allConstruct("abcd", ["a", "b", "cb", "abc", "c", "d"])
+//AllConstruct.allConstruct("abcdef", ["ab", "abc", "cd", "def", "abcd", "ef", "c"])
+AllConstruct.dynamic_allConstruct("eeeeeeee", ["e", "ee", "eee", "eeee", "eeeee"])
 
 // ### Part 2: Tabulation ###
 
