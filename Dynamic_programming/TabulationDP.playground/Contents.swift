@@ -66,25 +66,26 @@ func canSum(_ target: Int, _ array: [Int]) -> Bool{
 canSum(15, [7,14])
 
 // 2.4 howSum tabulation
-func howSum(_ target: Int, _ array: [Int]) -> [Int]{
-    var table = Array.init(repeating: [Int](), count: target+1)
-    let min = array.min()!
-    table[min] = [min]
+/// time complexity : O(m*n*m) -- because we need copy the array so additional *m
+/// m = targetSum, n = numbers.length
+func howSum(_ target: Int, _ array: [Int]) -> [Int]?{
+    var table = Array<[Int]?>.init(repeating: nil, count: target+1)
+    table[0] = []
     
-    for i in min...target{
-        if(table[i].count > 0){
+    for i in 0...target{
+        if(table[i] != nil){
             for num in array{
-                let index = table[i].reduce(0, +)
-                if(index+num <= target && table[index+num].count <= 0){
-                    table[index+num].append(num)
-                    table[index+num].append(contentsOf: table[i])
+                // purpose of &&: do not override
+                if(i+num <= target && table[i+num] == nil){
+                    table[i+num] = table[i]
+                    table[i+num]!.append(num)
                 }
             }
         }
     }
     
-    print(table)
     return table[target]
 }
 
-howSum(22, [7,3,4])
+
+howSum(25, [7,3,4])
