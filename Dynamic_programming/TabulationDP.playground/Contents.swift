@@ -1,5 +1,6 @@
 import Foundation
 
+// Course: https://www.youtube.com/watch?v=oBt53YbR9Kk
 // Tabulation Recipe
     /// 1. Visualize the problem as a table
     /// 2. Size the table based on the inputs
@@ -75,7 +76,7 @@ func howSum(_ target: Int, _ array: [Int]) -> [Int]?{
     for i in 0...target{
         if(table[i] != nil){
             for num in array{
-                // purpose of &&: do not override
+                /// purpose of &&: do not override
                 if(i+num <= target && table[i+num] == nil){
                     table[i+num] = table[i]
                     table[i+num]!.append(num)
@@ -91,6 +92,8 @@ howSum(25, [7,3,4])
 
 
 // 2.5 Best sum
+/// time complexity : O(m*n*m)
+/// m = targetSum, n = numbers.length
 func bestSum(_ target: Int, _ array: [Int]) -> [Int]?{
     var table = Array<[Int]?>.init(repeating: nil, count: target+1)
     table[0] = []
@@ -99,6 +102,7 @@ func bestSum(_ target: Int, _ array: [Int]) -> [Int]?{
         if(table[i] != nil){
             for num in array{
                 if(i+num <= target){
+                    /// make sure it is the shortest array
                     if(table[i+num] == nil || table[i+num]!.count > table[i]!.count+1){
                         table[i+num] = table[i]
                         table[i+num]!.append(num)
@@ -111,4 +115,27 @@ func bestSum(_ target: Int, _ array: [Int]) -> [Int]?{
     return table[target]
 }
 
-bestSum(25, [7,3,4])
+bestSum(25, [7,3,4,8,9])
+
+
+// 2.6 Can construct
+func canConstruct(_ target: String, _ wordBank: [String]) -> Bool{
+    let charArray: [Character] = Array(target)
+    var table = Array.init(repeating: false, count: target.count+1)
+    table[0] = true
+    
+    for i in 0..<charArray.count{
+        if(table[i] == true){
+            for word in wordBank{
+                if(word.hasPrefix(String(charArray[i])) && i+word.count <= charArray.count){
+                    table[i + word.count] = true
+                }
+            }
+        }
+    }
+    
+    print(table)
+    return table[target.count]
+}
+
+canConstruct("fedca", ["ca", "ed", "f"])
