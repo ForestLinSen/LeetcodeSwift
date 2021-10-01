@@ -119,23 +119,84 @@ bestSum(25, [7,3,4,8,9])
 
 
 // 2.6 Can construct
+/// time complexity: O(m^2 * n) time
+/// space complexity: O(m)
 func canConstruct(_ target: String, _ wordBank: [String]) -> Bool{
-    let charArray: [Character] = Array(target)
     var table = Array.init(repeating: false, count: target.count+1)
     table[0] = true
     
-    for i in 0..<charArray.count{
+    for i in 0..<target.count{
         if(table[i] == true){
             for word in wordBank{
-                if(word.hasPrefix(String(charArray[i])) && i+word.count <= charArray.count){
+                /// if the word matches the characters starts at the position i
+                if(target.prefix(i+word.count).suffix(word.count) == word
+                    && i+word.count <= target.count){
                     table[i + word.count] = true
                 }
             }
         }
     }
+    return table[target.count]
+}
+
+/// [f] [e] [d] [c] [a]
+canConstruct("fegca", ["f", "edc", "a"])
+
+// 2.7 Count construct
+/// time complexity: O(m^2 * n) time
+/// space complexity: O(m)
+func countConstruct(_ target: String, _ wordBank: [String]) -> Int{
+    var table = Array.init(repeating: 0, count: target.count + 1)
+    table[0] = 1
     
+    for i in 0...target.count{
+        if(table[i] > 0){
+            for word in wordBank{
+                if(target.prefix(i+word.count).suffix(word.count) == word
+                    && i+word.count <= target.count){
+                    table[i+word.count] += table[i]
+                    
+                }
+            }
+        }
+    }
+    
+    return table[target.count]
+}
+
+countConstruct("enterapotentpot", ["a", "p", "ent", "enter", "ot", "o", "t"])
+
+
+// 2.8 all construct
+func allConstruct(_ target: String, _ wordBank: [String]) -> [[String]?]{
+    var table = Array<[[String]?]>.init(repeating: [], count: target.count + 1)
+    table[0] = [[]]
+
+    for i in 0...target.count{
+        if(table[i].first != nil){
+            for word in wordBank{
+                let index = i+word.count
+                if(index <= target.count && target.prefix(index).suffix(word.count) == word){
+                    let tmp = table[i].map({ s -> [String]? in
+                        var ss = s
+                        ss?.append(word)
+                        return ss
+                    })
+                    
+                    table[index].append(contentsOf: tmp)
+
+                }
+            }
+
+        }
+    }
     print(table)
     return table[target.count]
 }
 
-canConstruct("fedca", ["ca", "ed", "f"])
+
+allConstruct("enterapotentpot", ["a", "p", "ent", "enter", "ot", "o", "t"])
+
+
+//let a: [[String]?] = [[]]
+//a.first
