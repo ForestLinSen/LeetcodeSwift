@@ -168,6 +168,8 @@ countConstruct("enterapotentpot", ["a", "p", "ent", "enter", "ot", "o", "t"])
 
 
 // 2.8 all construct
+/// time complexity: O(n^m)
+/// space complexity: O(n^m)
 func allConstruct(_ target: String, _ wordBank: [String]) -> [[String]?]{
     var table = Array<[[String]?]>.init(repeating: [], count: target.count + 1)
     table[0] = [[]]
@@ -177,6 +179,7 @@ func allConstruct(_ target: String, _ wordBank: [String]) -> [[String]?]{
             for word in wordBank{
                 let index = i+word.count
                 if(index <= target.count && target.prefix(index).suffix(word.count) == word){
+                    
                     let tmp = table[i].map({ s -> [String]? in
                         var ss = s
                         ss?.append(word)
@@ -190,13 +193,12 @@ func allConstruct(_ target: String, _ wordBank: [String]) -> [[String]?]{
 
         }
     }
-    print(table)
     return table[target.count]
 }
 
 
 allConstruct("enterapotentpot", ["a", "p", "ent", "enter", "ot", "o", "t"])
-
+allConstruct("purple", ["purp", "p", "ur", "le", "purpl"])
 
 //let a: [[String]?] = [[]]
 //a.first
