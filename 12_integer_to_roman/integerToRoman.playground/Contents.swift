@@ -1,50 +1,77 @@
 import Cocoa
 
-
 func intToRoman(_ num: Int) -> String {
     
-    if(num <= 0){return ""}
-  
-    if(num >= 1000){
-        return "M" + intToRoman(num-1000)
-    }else if(num >= 900){
-        return "CM" + intToRoman(num-900)
+    let romanValues = [1000, 900, 500, 400, 100, 90, 50, 40 , 10 , 9 , 5 , 4, 1]
+    let romanSymbols = ["M", "CM", "D", "CD", "C", "XC", "L", "XL", "X", "IX", "V", "IV", "I"]
+    
+    var num = num
+    var result = ""
+    
+    var i = 0
+    while num > 0{
+        if (num >= romanValues[i]){
+            result += romanSymbols[i]
+            num -= romanValues[i]
+            print(num)
+        }else{
+            i += 1
+        }
     }
     
-    else if(num >= 500){
-        return "D" + intToRoman(num-500)
-    }else if(num >= 400){
-        return "CD" + intToRoman(num-400)
-    }
-    
-    else if(num >= 100){
-        return "C" + intToRoman(num-100)
-    }else if(num >= 90){
-        return "XC" + intToRoman(num-90)
-    }
-    
-    else if(num >= 50){
-        return "L" + intToRoman(num-50)
-    }else if(num >= 40){
-        return "XL" + intToRoman(num-40)
-    }
-    
-    else if(num >= 10){
-        return "X" + intToRoman(num-10)
-    }else if(num >= 9){
-        return "IX" + intToRoman(num-9)
-    }
-    
-    else if(num >= 5){
-        return "V" + intToRoman(num-5)
-    }else if(num >= 4){
-        return "IV" + intToRoman(num-4)
-    }
-    
-    else {
-        return "I" + intToRoman(num-1)
-    }
-
+    return result
 }
 
-intToRoman(1000)
+intToRoman(58)
+
+
+//intToRoman(1000)
+
+// Solution 1
+//func intToRoman(_ num: Int) -> String {
+//
+//    if(num <= 0){return ""}
+//
+//    if(num >= 1000){
+//        return "M" + intToRoman(num-1000)
+//    }else if(num >= 900){
+//        return "CM" + intToRoman(num-900)
+//    }
+//
+//    else if(num >= 500){
+//        return "D" + intToRoman(num-500)
+//    }else if(num >= 400){
+//        return "CD" + intToRoman(num-400)
+//    }
+//
+//    else if(num >= 100){
+//        return "C" + intToRoman(num-100)
+//    }else if(num >= 90){
+//        return "XC" + intToRoman(num-90)
+//    }
+//
+//    else if(num >= 50){
+//        return "L" + intToRoman(num-50)
+//    }else if(num >= 40){
+//        return "XL" + intToRoman(num-40)
+//    }
+//
+//    else if(num >= 10){
+//        return "X" + intToRoman(num-10)
+//    }else if(num >= 9){
+//        return "IX" + intToRoman(num-9)
+//    }
+//
+//    else if(num >= 5){
+//        return "V" + intToRoman(num-5)
+//    }else if(num >= 4){
+//        return "IV" + intToRoman(num-4)
+//    }
+//
+//    else {
+//        return "I" + intToRoman(num-1)
+//    }
+//
+//}
+
+
