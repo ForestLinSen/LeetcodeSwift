@@ -1,28 +1,5 @@
 import Cocoa
 
-
-var dict: [String: [String]] = ["2": ["a", "b", "c"],
-                                "3": ["d", "e", "f"],
-                                "4": ["g", "h", "i"],
-                                "5": ["j", "k", "l"],
-                                "6": ["m", "n", "o"],
-                                "7": ["p", "q", "r", "s"],
-                                "8": ["t", "u", "v"],
-                                "9": ["w", "x", "y", "z"]]
-
-
-func helper(a: [String], b: [String]) -> [String]{
-    var result: [String] = []
-    
-    for x in a{
-        for y in b{
-            result.append(x+y)
-        }
-    }
-    
-    return result
-}
-
 func letterCombinations(_ digits: String) -> [String] {
     
     guard digits != "" else { return [] }
@@ -50,6 +27,19 @@ func letterCombinations(_ digits: String) -> [String] {
     }
 
     return dict[digits]!
+}
+
+
+func helper(a: [String], b: [String]) -> [String]{
+    var result: [String] = []
+    
+    for x in a{
+        for y in b{
+            result.append(x+y)
+        }
+    }
+    
+    return result
 }
 
 letterCombinations("25")
