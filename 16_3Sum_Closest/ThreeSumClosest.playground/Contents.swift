@@ -7,9 +7,7 @@ func threeSumClosest(_ nums: [Int], _ target: Int) -> Int {
     let nums = nums.sorted()
     
     for i in 0..<nums.count{
-        //print("Closest: \(closest)")
-        let num = nums[i]
-        
+        //print("Closest: \(closest)")   
         var left = i + 1
         var right = nums.count - 1
         
