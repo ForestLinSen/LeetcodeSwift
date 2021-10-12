@@ -42,5 +42,5 @@ func helper(a: [String], b: [String]) -> [String]{
     return result
 }
 
-letterCombinations("25")
+print(letterCombinations("2583"))
 
