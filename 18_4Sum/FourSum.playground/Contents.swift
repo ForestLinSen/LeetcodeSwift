@@ -1,42 +1,60 @@
 import Cocoa
 
-var index = 0
-func fourSum(_ nums: [Int], _ target: Int) -> [[Int]] {
+class Solution {
+    var index = 0
     
-    if(target == 0 && index != 0){ return [[]]}
-    
-    var finalResult: [[Int]] = []
-    
-    for i in 0..<nums.count{
-        let num = nums[i]
+    func calculate(_ nums: [Int], _ target: Int) -> [[Int]] {
+        if(target == 0 && nums.count == 4 && nums.reduce(0, +) == 0){return [nums]}
+        if(target == 0 && index != 0){ return [[]]}
         
-        let remainder = target - num
-
-        // not possible
-        if(remainder < nums.min()! && remainder < 0){ return []}
-
-    
-        var tmp = nums
-        tmp.remove(at: i)
-
-        let result = fourSum(tmp, remainder)
+        var finalResult: [[Int]] = []
         
-        if(result.first != nil){
-            result.forEach { intArray in
-                var tmp = intArray
-                tmp.append(num)
-                finalResult.append(tmp)
+        for i in 0..<nums.count{
+            let num = nums[i]
+            
+            let remainder = target - num
+
+            // not possible
+            if(remainder < nums.min()! && remainder < 0){ return []}
+
+        
+            var tmp = nums
+            tmp.remove(at: i)
+
+            let result = calculate(tmp, remainder)
+            
+            if(result.first != nil){
+                result.forEach { intArray in
+                    if intArray.count > 4 { return }
+                    var tmp = intArray
+                    tmp.append(num)
+                    finalResult.append(tmp)
+                }
             }
+            
         }
         
+        index += 1
+
+        return finalResult
     }
     
-    index += 1
+    func fourSum(_ nums: [Int], _ target: Int) -> [[Int]] {
+        let arrays = calculate(nums, target)
+        
+        var result = [[Int]]()
     
-    return finalResult
+        for array in arrays{
+            if(array.count == 4){
+                result.append(array.sorted())
+            }
+        }
+        return Array(Set(result))
+    }
 }
 
-fourSum([1,0,-1,0,-2,2], 0)
+let s = Solution()
+s.fourSum([0,0,0,0], 0)
 
 
 //func fourSum(_ nums: [Int], _ target: Int) -> [[Int]] {
