@@ -4,41 +4,56 @@ class Solution {
     
     var index = 0
     var memo: [Int: [[Int]]] = [:]
+    var checkMemo: [Int: [[Int]]] = [:]
     
     func mainCalculate(_ nums: [Int], _ target: Int) -> [[Int]] {
+        
         if(target == 0 && index != 0){ return [[]]}
         
         //result already in the memo
         if let r = memo[target] {
-            //if(r.count > 4){return []}
-            return r
+            if(r.count > 4){return []}
+            
+            if(checkMemo[target]!.contains(nums)){
+                return r
+            }else{
+                return []
+            }
         }
- 
+        
+        let max = nums.map{abs($0)}.reduce(0, +)
         for i in 0..<nums.count{
             let num = nums[i]
             let remainder = target - num
 
             // not possible
-            if(remainder < nums.min()!-1 && remainder < 0){ return []}
-
+            
+            if(remainder < -max){ return []}
+            
             var tmp = nums
+            //print("Before: \(tmp), num: \(num)")
             tmp.remove(at: i)
+            //print("After: \(tmp)")
 
             let result = mainCalculate(tmp, remainder)
             
             if(result.first != nil){
                 result.forEach { intArray in
                     var tmp = intArray
-                    tmp.insert(num, at: 0)
+                    tmp.append(num)
                     
                     if(memo[target] == nil){ memo[target] = []}
                     memo[target]?.append(tmp)
-                    //print(tmp)
+                    
+                    if(checkMemo[target] == nil){ checkMemo[target] = []}
+                    checkMemo[target]?.append(nums)
                 }
             }
         }
         
         index += 1
+        
+        //print(checkMemo[target])
 
         return memo[target] ?? []
     }
@@ -57,49 +72,9 @@ class Solution {
 }
 
 let s = Solution()
-let result = s.fourSum([1,0,-1,0,-2,2], 0)
+//let result = s.fourSum([-3,-2,-1,0,0,1,2,3], 0)
+//let result = s.fourSum([-3,-1,0,2,4,5], 0)
+let result = s.fourSum([0,0,0,0], 0)
 print(result)
 
 
-//func fourSum(_ nums: [Int], _ target: Int) -> [[Int]] {
-//
-//    var table: [[[Int]]] = Array(repeating: [], count: target+1)
-//
-//
-//    for num in nums{
-//        table[num].append([num])
-//    }
-//
-//    for i in 1..<table.count{
-//        if(table[i].first != nil){
-//            for num in nums{
-//                if i+num < table.count{
-//                    table[i].forEach { intArray in
-//
-//                        if(intArray.filter({$0 == num}).count < nums.filter({$0 == num}).count){
-//                            var tmp = intArray
-//                            tmp.insert(num, at: 0)
-//                            table[i+num].append(tmp)
-//                        }
-//
-//                    }
-//                }
-//            }
-//        }
-//    }
-//
-//
-//    var result = [[Int]]()
-//
-//    table[target] = Array(Set(table[target]))
-//
-//    for array in table[target]{
-//        if(array.count == 4){
-//            result.append(array.sorted())
-//        }
-//    }
-//
-//    return result
-//}
-//
-//fourSum([2,2,2,2,2], 8)
