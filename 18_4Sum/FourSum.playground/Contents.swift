@@ -1,30 +1,71 @@
 import Cocoa
 
-func twoSum(_ nums: [Int], _ target: Int) -> [[Int]] {
-    let nums = nums.sorted()
-    var left = 0;
-    var right = nums.count-1
+
+class Solution {
     
-    var result:[[Int]] = []
-    
-    while(left < right){
-        let sum = nums[left] + nums[right]
+    func fourSum(_ nums: [Int], _ target: Int) -> [[Int]] {
+        let nums = nums.sorted()
         
-        if(sum == target){
-            result.append([nums[left], nums[right]])
-            left += 1
-            right += 1
-        }else if(sum > target){
-            right -= 1
-        }else{
-            left += 1
-        }
+        return Array(Set(kSum(nums, 0, target, 4)))
+
     }
     
-    return result
+    func kSum(_ nums: [Int], _ start: Int, _ target: Int, _ k: Int) -> [[Int]] {
+        var result: [[Int]] = []
+        
+        if(k == 2){
+            return twoSum(nums, start, target)
+        }
+        
+        for i in start..<nums.count{
+            
+            if(i == start || nums[i] != nums[i-1]){
+                let num = nums[i]
+                for seq in kSum(nums, i+1, target-num, k-1){
+                    var tmp = seq
+                    tmp.append(num)
+                    result.append(tmp)
+                    
+                }
+            }
+     
+        }
+        
+        return result
+    }
+    
+    func twoSum(_ nums: [Int], _ start: Int, _ target: Int) -> [[Int]] {
+        var left = start;
+        var right = nums.count-1
+ 
+        var result:[[Int]] = []
+        
+        while(left < right){
+            let sum = nums[left] + nums[right]
+            if(sum == target){
+                result.append([nums[left], nums[right]])
+                left += 1
+                right -= 1
+            }else if(sum > target){
+                right -= 1
+            }else{
+                left += 1
+            }
+        }
+        
+        return result
+    }
 }
 
-twoSum([-1,-2,-3,-4,-5], -8)
+
+
+
+
+
+
+//kSum([4,1,5,6,2,3], 0, 8, 3)
+kSum([-3,-2,-1,0,0,1,2,3], 0, 0, 4)
+//twoSum([2,3,5,6], 0, 4)
 
 
 //class Solution {
