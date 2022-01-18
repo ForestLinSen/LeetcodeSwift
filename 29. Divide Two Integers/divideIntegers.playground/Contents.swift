@@ -1,27 +1,37 @@
 class Solution {
     func divide(_ dividend: Int, _ divisor: Int) -> Int {
         
-        if dividend == Int(Int32.min) && divisor == -1 {
-            return Int(Int32.max)
+        let negative = (dividend < 0) == (divisor < 0)
+        var _dividend = Int64(abs(dividend))
+        let _divisor = Int64(abs(divisor))
+        
+        var count = 0, t = 1, divisor = _divisor
+        
+        while divisor < _dividend {
+            divisor = divisor << 1
+            t = t << 1
+            
+            print("Divisor: \(divisor)")
         }
         
-        let negative = (dividend * divisor) < 0
+        print("--")
         
-        var dividend = Int64(abs(dividend))
-        let divisor = Int64(abs(divisor))
-        
-        var count = 0
-        
-        while divisor <= dividend {
-            dividend -= divisor
-            count += 1
-            print(dividend, count)
+        while divisor > 0, divisor > _divisor {
+            
+            while divisor > _dividend {
+                divisor = divisor >> 1
+                t = t >> 1
+            }
+            
+            print(count, t)
+            
+            _dividend -= divisor
+            count += t
         }
-        
-        
-        return negative ? -count : count
+        if _dividend == _divisor { count += 1 }
+        return negative ? min(count, Int(Int32.max)) : max(-count, Int(Int32.min))
     }
 }
 
 let solver = Solution()
-solver.divide(-2147483648, 2)
+solver.divide(-475, 2)
