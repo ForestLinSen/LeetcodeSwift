@@ -1,40 +1,28 @@
 class Solution {
     func strStr(_ haystack: String, _ needle: String) -> Int {
-        
-        if needle.count > haystack.count {
-            return -1
-        }
-        
-        if (needle == "" && haystack != "") || needle == haystack{
-            return 0
-        }
-
-        
-        let haystack = [Character](haystack)
-        let char = [Character](needle)
+        guard !needle.isEmpty else { return 0 }
         
         var i = 0
-        var j = 0
-      
-        while(i < haystack.count){
-            
-            if haystack[i] == char[0]{
-                for c in char {
-                    if i+j < haystack.count && c == haystack[i+j]{
-                        j += 1
-                    }else{
-                        j = 0
-                        break
-                    }
-                }
+        let h = Array(haystack.utf8) // haystack
+        let n = Array(needle.utf8) // needle
+        
+        while i <= h.count - n.count {
+            var j = 0
+            var tmp = 0
+            if h[i] == n[j] { // check rest of string...
                 
-                if j == char.count {
-                    return i
+                j = n.count - 1
+                
+                while h[i+j] == n[j] {
+                    guard j != 0 else { return i }
+                    if h[i+j] == n[0] { tmp = j }
+                    j -= 1
                 }
             }
             
-            i = i+1
+            i += tmp > 0 ? n.count - tmp : 1
         }
+        
         return -1
     }
 }
