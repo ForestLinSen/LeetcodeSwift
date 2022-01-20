@@ -34,4 +34,4 @@ class Solution {
 }
 
 let solver = Solution()
-solver.divide(-475, 2)
+solver.divide(-2147483647, 2)
