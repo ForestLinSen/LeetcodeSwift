@@ -10,17 +10,45 @@ class Solution {
         
         var count = 0
         
-        while i < s.count-1{
+        while i < charsArray.count-1{
             
             
             // cannot start here
-            if charsArray[i] != "(" {
+            if charsArray[i] == ")" {
                 i += 1
                 countArray.append(count)
                 count = 0
             }else{
-                count += 2
-                i += 2
+                var j = i
+                while(charsArray[j+1] == "("){
+                    j += 1
+                }
+                
+                if(j > i){
+                    var k = j
+                    
+                    while(k+1 <= charsArray.count-1 && charsArray[k+1] == ")"){
+                        k += 1
+                    }
+                    
+                    print("Count before \(count)")
+                    
+                    if (k-j > j-i){
+                        let step = j-i+1
+                        count += step*2
+                        i += step
+                    }else{
+                        count = 0
+                        count += (k-j)*2
+                        i = k+1
+                    }
+                    
+                    print(" Count +=: \(count)")
+                }else{
+                    count += 2
+                    i += 2
+                }
+
             }
             
             countArray.append(count)
@@ -44,27 +72,39 @@ class Tests: XCTestCase{
         let result = solver.longestValidParentheses(s)
         XCTAssertEqual(4, result)
     }
-    
+
     func test1(){
         let s = "(()"
         let result = solver.longestValidParentheses(s)
         XCTAssertEqual(2, result)
     }
-    
+
     func test2(){
         let s = ""
         let result = solver.longestValidParentheses(s)
         XCTAssertEqual(0, result)
     }
-    
+
     func test3(){
         let s = ")()()()()"
         let result = solver.longestValidParentheses(s)
         XCTAssertEqual(8, result)
     }
-    
+
     func test4(){
         let s = "()(())"
+        let result = solver.longestValidParentheses(s)
+        XCTAssertEqual(6, result)
+    }
+    
+    func test5(){
+        let s = "()(()"
+        let result = solver.longestValidParentheses(s)
+        XCTAssertEqual(2, result)
+    }
+    
+    func test6(){
+        let s = "(()())"
         let result = solver.longestValidParentheses(s)
         XCTAssertEqual(6, result)
     }
