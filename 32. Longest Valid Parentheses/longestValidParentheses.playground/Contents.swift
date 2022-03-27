@@ -2,60 +2,33 @@ import SwiftUI
 
 class Solution {
     func longestValidParentheses(_ s: String) -> Int {
-        let charsArray = Array(s)
-        var countArray = [Int]()
+        var dp: [Int] = Array.init(repeating: 0, count: s.count)
+        let chars = Array(s)
         
-        var i = 0
-        //var j = 0
-        
-        var count = 0
-        
-        while i < charsArray.count-1{
+        for i in 0..<chars.count{
             
-            
-            // cannot start here
-            if charsArray[i] == ")" {
-                i += 1
-                countArray.append(count)
-                count = 0
+            if chars[i] == "("{
+                dp[i] = 0
             }else{
-                var j = i
-                while(charsArray[j+1] == "("){
-                    j += 1
+                
+                if i-1>=0 && chars[i-1] == "(" {
+                    dp[i] = dp[i-1] + 2
                 }
                 
-                if(j > i){
-                    var k = j
+                // s = "())"
+                if i-1>=0 && i-dp[i-1]-1>=0 && chars[i-dp[i-1]-1] == "("{
+                    dp[i] = dp[i-1] + 2
                     
-                    while(k+1 <= charsArray.count-1 && charsArray[k+1] == ")"){
-                        k += 1
+                    if (i-dp[i-1]-2)>=0 {
+                        dp[i] += dp[i-dp[i-1]-2]
                     }
-                    
-                    print("Count before \(count)")
-                    
-                    if (k-j > j-i){
-                        let step = j-i+1
-                        count += step*2
-                        i += step
-                    }else{
-                        count = 0
-                        count += (k-j)*2
-                        i = k+1
-                    }
-                    
-                    print(" Count +=: \(count)")
-                }else{
-                    count += 2
-                    i += 2
                 }
-
             }
             
-            countArray.append(count)
+            print(dp)
         }
         
-        print(countArray)
-        return countArray.max() ?? 0
+        return dp.max() ?? 0
     }
 }
 
@@ -96,17 +69,29 @@ class Tests: XCTestCase{
         let result = solver.longestValidParentheses(s)
         XCTAssertEqual(6, result)
     }
-    
+
     func test5(){
         let s = "()(()"
         let result = solver.longestValidParentheses(s)
         XCTAssertEqual(2, result)
     }
-    
+
     func test6(){
         let s = "(()())"
         let result = solver.longestValidParentheses(s)
         XCTAssertEqual(6, result)
+    }
+
+    func test7(){
+        let s = ")()())"
+        let result = solver.longestValidParentheses(s)
+        XCTAssertEqual(4, result)
+    }
+    
+    func test8(){
+        let s = "())"
+        let result = solver.longestValidParentheses(s)
+        XCTAssertEqual(2, result)
     }
 }
 
