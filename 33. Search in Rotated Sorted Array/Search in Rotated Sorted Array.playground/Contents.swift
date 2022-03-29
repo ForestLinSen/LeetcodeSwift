@@ -15,37 +15,25 @@ class Solution {
         }
         
         let mid = (low+high)/2
-        let val = nums[mid]
         
-        print(val)
+        print(nums[mid])
         
-        if val == target{
+        if nums[mid] == target{
             return mid
         }else{
-            let leftMid = (low + mid)/2
-            let rightMid = (mid+1+high)/2
             
-            if(nums[leftMid] == target){
-                return leftMid
-            }else if nums[rightMid] == target{
-                return rightMid
-            }
-            
-            if val > target{
-
-                if nums[leftMid] > nums[rightMid] && nums[high] >= target{ // rotated
-                    return binarySearch(nums, low: mid+1, high: high, target: target) // go right
+            if(nums[mid] >= nums[low]){ //说明至少左侧到中间的位置顺序是没问题的
+                // 正常情况下有第一个条件就已经足够了，第二个条件用于判定roated情况下，target依旧在左边
+                if nums[mid] > target && target >= nums[low]{
+                    return binarySearch(nums, low: low, high: mid-1, target: target) // Left
                 }else{
-                    return binarySearch(nums, low: low, high: mid-1, target: target) // go left
+                    return binarySearch(nums, low: mid+1, high: high, target: target) // Right
                 }
-                
-            }else{
-                
-                if ((nums[leftMid] > nums[rightMid] && nums[high] >= target) || target > nums[high]) { // rotated
-                    
-                    return binarySearch(nums, low: low, high: mid-1, target: target) // go left
+            }else{ // 大的数字被rotated到了左边
+                if target > nums[mid] && target <= nums[high]{ // 所以target如果比较大的话应该去左边找
+                    return binarySearch(nums, low: mid+1, high: high, target: target) // Right
                 }else{
-                    return binarySearch(nums, low: mid+1, high: high, target: target) // go right
+                    return binarySearch(nums, low: low, high: mid-1, target: target) // Left
                 }
             }
         }
@@ -57,12 +45,6 @@ import XCTest
 
 class Tests: XCTestCase{
     private let solver = Solution()
-    
-    func test0(){
-        let arr = [2,3,4,10,40]
-        let result = solver.binarySearch(arr, low: 0, high: arr.count-1, target: 10)
-        XCTAssertEqual(result, 3)
-    }
 
     func test1(){
         let arr = [4,5,6,7,0,1,2]
@@ -124,10 +106,15 @@ class Tests: XCTestCase{
         let res = solver.search([5,1,2,3,4], 4)
         XCTAssertEqual(res, 4)
     }
-    
+
     func test13(){
         let res = solver.search([4,5,6,7,8,1,2,3], 8)
         XCTAssertEqual(res, 4)
+    }
+    
+    func test14(){
+        let res = solver.search([5,1,2,3,4], 1)
+        XCTAssertEqual(res, 1)
     }
 }
 
