@@ -22,15 +22,14 @@ class Solution {
             return mid
         }else{
             
-            if(nums[mid] >= nums[low]){ //说明至少左侧到中间的位置顺序是没问题的
-                // 正常情况下有第一个条件就已经足够了，第二个条件用于判定roated情况下，target依旧在左边
+            if(nums[mid] >= nums[low]){ // 左侧没问题
                 if nums[mid] > target && target >= nums[low]{
                     return binarySearch(nums, low: low, high: mid-1, target: target) // Left
                 }else{
                     return binarySearch(nums, low: mid+1, high: high, target: target) // Right
                 }
-            }else{ // 大的数字被rotated到了左边
-                if target > nums[mid] && target <= nums[high]{ // 所以target如果比较大的话应该去左边找
+            }else{ // 右侧没问题
+                if target > nums[mid] && target <= nums[high]{
                     return binarySearch(nums, low: mid+1, high: high, target: target) // Right
                 }else{
                     return binarySearch(nums, low: low, high: mid-1, target: target) // Left
