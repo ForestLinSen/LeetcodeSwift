@@ -14,7 +14,7 @@ class Solution {
         return true
     }
     
-    func isValidSudoku(_ board: [[Character]]) -> Bool {
+    func isValidSudokuFast(_ board: [[Character]]) -> Bool {
         let n = board.count
         var rows = Array(repeating: Set<Character>(), count: n)
         var cols = Array(repeating: Set<Character>(), count: n)
@@ -50,6 +50,38 @@ class Solution {
         }
 
         return true
+    }
+    
+    func isValidSudoku(_ board: [[Character]]) -> Bool {
+        let n = board.count
+        var rows = Array(repeating: [Character](), count: n)
+        var cols = Array(repeating: [Character](), count: n)
+        var boxes = Array(repeating: [Character](), count: n)
+        
+        for row in board.indices{
+            for col in board[row].indices{
+                let item = board[row][col]
+                
+                if item == "."{
+                    continue
+                }
+                
+                rows[row].append(item)
+                cols[col].append(item)
+
+                let boxIndex = row/3 * 3 + col/3
+                boxes[boxIndex].append(item)
+            }
+        }
+        
+        for i in rows.indices{
+            if rows[i].count != Set(rows[i]).count || cols[i].count != Set(cols[i]).count || boxes[i].count != Set(boxes[i]).count{
+                return false
+            }
+        }
+        
+        return true
+        
     }
     
 }
