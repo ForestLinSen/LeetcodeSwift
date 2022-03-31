@@ -1,6 +1,5 @@
 class Solution {
-    func isValidSudoku(_ board: [[Character]]) -> Bool {
-        
+    func isValidSudokuSlow(_ board: [[Character]]) -> Bool {
         for i in board.indices{
             let rows = board[i].filter{$0 != "."}
             let cols = board.map {$0[i]}.filter{$0 != "."}
@@ -12,6 +11,44 @@ class Solution {
             }
         }
         
+        return true
+    }
+    
+    func isValidSudoku(_ board: [[Character]]) -> Bool {
+        let n = board.count
+        var rows = Array(repeating: Set<Character>(), count: n)
+        var cols = Array(repeating: Set<Character>(), count: n)
+        var boxes = Array(repeating: Set<Character>(), count: n)
+        
+        for row in board.indices{
+            for col in board[row].indices{
+                let item = board[row][col]
+                
+                if item == "."{
+                    continue
+                }
+                
+                if rows[row].contains(item){
+                    return false
+                }else{
+                    rows[row].insert(item)
+                }
+                
+                if cols[col].contains(item){
+                    return false
+                }else{
+                    cols[col].insert(item)
+                }
+                
+                let boxIndex = row/3 * 3 + col/3
+                if boxes[boxIndex].contains(item){
+                    return false
+                }else{
+                    boxes[boxIndex].insert(item)
+                }
+            }
+        }
+
         return true
     }
     
