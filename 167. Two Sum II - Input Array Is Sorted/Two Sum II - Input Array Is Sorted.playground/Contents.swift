@@ -17,6 +17,27 @@ class Solution {
         
         return [-1, -1]
     }
+    
+    // MARK: - Solution 2: Two Pointers
+    func twoSumTwoPointers(_ numbers: [Int], _ target: Int) -> [Int]{
+        var left = 0
+        var right = numbers.count-1
+        
+        while left < right{
+            
+            let sum = numbers[left] + numbers[right]
+            
+            if sum == target{
+                return [left+1, right+1]
+            }else if sum < target{
+                left += 1
+            }else{
+                right -= 1
+            }
+        }
+        
+        return [-1, -1]
+    }
 
 
 }
@@ -28,17 +49,17 @@ class Test: XCTestCase{
     private let solver = Solution()
     
     func test1(){
-        let result = solver.twoSum([2,7,11,15], 9)
+        let result = solver.twoSumTwoPointers([2,7,11,15], 9)
         XCTAssertEqual(result, [1,2])
     }
     
     func test2(){
-        let result = solver.twoSum([2,3,4], 6)
+        let result = solver.twoSumTwoPointers([2,3,4], 6)
         XCTAssertEqual(result, [1,3])
     }
     
     func test3(){
-        let result = solver.twoSum([-1,0], -1)
+        let result = solver.twoSumTwoPointers([-1,0], -1)
         XCTAssertEqual(result, [1,2])
     }
 }
