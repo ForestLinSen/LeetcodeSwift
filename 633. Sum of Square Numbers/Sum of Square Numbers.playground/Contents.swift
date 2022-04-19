@@ -1,5 +1,7 @@
+import Foundation
+
 class Solution {
-    // MARK: - hashtable solution
+    // MARK: - Hashtable Solution
     func judgeSquareSum(_ c: Int) -> Bool {
         var dict: [Int: Int] = [:]
         
@@ -21,42 +23,62 @@ class Solution {
         
         return false
     }
+    
+    // MARK: - Two Pointers Solution
+    func judgeSquareSumTwoPointers(_ c: Int) -> Bool {
+        var left = 0
+        var right = Int(sqrt(Double(c)))
+        
+        while left <= right{
+            let result = left*left + right*right
+            
+            if result == c{
+                return true
+            }else if result < c{
+                left += 1
+            }else{
+                right -= 1
+            }
+        }
+        
+        return false
 
+    }
+    
 }
 
 import XCTest
-import Darwin
 
 class Test: XCTestCase{
     private let solver = Solution()
     
     func test1(){
-        let result = solver.judgeSquareSum(5)
+        let result = solver.judgeSquareSumTwoPointers(5)
         XCTAssertEqual(result, true)
     }
     
     func test2(){
-        let result = solver.judgeSquareSum(3)
+        let result = solver.judgeSquareSumTwoPointers(3)
         XCTAssertEqual(result, false)
     }
     
     func test3(){
-        let result = solver.judgeSquareSum(97)
+        let result = solver.judgeSquareSumTwoPointers(97)
         XCTAssertEqual(result, true)
     }
     
     func test4(){
-        let result = solver.judgeSquareSum(11)
+        let result = solver.judgeSquareSumTwoPointers(11)
         XCTAssertEqual(result, false)
     }
     
     func test5(){
-        let result = solver.judgeSquareSum(2)
+        let result = solver.judgeSquareSumTwoPointers(2)
         XCTAssertEqual(result, true)
     }
     
     func test6(){
-        let result = solver.judgeSquareSum(8)
+        let result = solver.judgeSquareSumTwoPointers(8)
         XCTAssertEqual(result, true)
     }
 }
