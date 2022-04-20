@@ -20,7 +20,7 @@ class Solution {
             result.append(contentsOf: nums2[j...n-1])
         }
         
-        nums1 = result 
+        nums1 = result
     }
 }
 
