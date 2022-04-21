@@ -34,6 +34,7 @@ class Solution{
     }
 }
 
-var nums = [7,5,3,2,6,8,9]
+var nums = [3,2,1,5,6,4]
 let solver = Solution()
 solver.quickSort(nums: &nums, left: 0, right: nums.count)
+print(nums)
