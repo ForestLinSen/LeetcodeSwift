@@ -1,21 +1,26 @@
 class Solution {
-    func canPlaceFlowers(_ flowerbed: [Int], _ n: Int) -> Bool {
-        if n == 0 { return true}
+    func isSubsequence(_ s: String, _ t: String) -> Bool {
+        if s.count == 0{ return true}
         
+        let s = Array(s)
+        let t = Array(t)
+        
+        var i = 0
+        var j = 0
         var count = 0
-        var flowerbed = flowerbed
         
-        for i in 0..<flowerbed.count{
-            if flowerbed[i] == 0 && (i == 0 || flowerbed[i-1] == 0) && (i == flowerbed.count-1 || flowerbed[i+1] == 0){
-                flowerbed[i] = 1
+        while j < t.count{
+            if s[i] == t[j]{
                 count += 1
-                if count == n { return true}
+                i += 1
+                if count == s.count { return true}
             }
+            j += 1
         }
-        
         return false
     }
 }
 
+
 let solver = Solution()
-solver.canPlaceFlowers([1,0,0,0,1], 2)
+solver.isSubsequence("abc", "ahbgdc")
