@@ -2,67 +2,48 @@
 
 import Foundation
 
-//let nums = [2,1,5,6]
-//
-//nums.reduce(0) { partialResult, num in
-//    return partialResult + num*num
-//}
 
 class Solution {
     func numSquares(_ n: Int) -> Int {
-        var queue = [[Int]]()
-        var initSqrt = Int(sqrt(Double(n)))
-        queue.append([initSqrt])
-        
-        var results = [Int]()
-        
+
+        var queue: [Int] = [n]
+        var count = 0
+        var visited: [Int: Bool] = [n: true]
         
         while !queue.isEmpty{
-            var size = queue.count
             
-            while size > 0{
-                var currentNums = queue.removeFirst()
+            // Loop throught every element in the current queue
+            for _ in 0..<queue.count{
                 
-                let result = currentNums.reduce(0) { partialResult, num in
-                    return partialResult + num*num
+                let currentNum = queue.removeFirst()
+                
+                var i = 1
+                
+                if currentNum == 0 {
+                    return count
+                }
+
+                while (currentNum - i*i) >= 0 {
+                    
+                    let residual = currentNum - i*i
+                    
+                    if !visited[residual, default: false]{
+                        queue.append(residual)
+                        visited[residual] = true
+                    }
+
+                    i += 1
                 }
                 
-                // find
-                if result == n { results.append(currentNums.count) }
-                
-                initSqrt -= 1
-                
-                if result > n{
-                    let lastNum = currentNums.removeLast()
-                    if lastNum > 1{
-                        currentNums.append(lastNum - 1)
-                        queue.append(currentNums)
-                    }
-                    
-                    
-                    if initSqrt > 0{
-                        queue.append([initSqrt])
-                    }
-                    
-                }else{
-                    currentNums.append(currentNums.last!)
-                    queue.append(currentNums)
-                }
-                
-//                initSqrt -= 1
-//                if initSqrt > 0{
-//                    queue.append([initSqrt])
-//                }
-                
-                print(currentNums, initSqrt)
-                
-                size -= 1
             }
+            
+            print(queue)
+            count += 1
         }
         
-        
-        return results.min() ?? -1
+        return -1
     }
+
 }
 
 
@@ -81,11 +62,11 @@ class Test: XCTestCase{
 //        XCTAssertEqual(result, 2)
 //    }
 //
-//    func test2(){
-//        let result = solver.numSquares(17)
-//        XCTAssertEqual(result, 2)
-//    }
-    
+    func test2(){
+        let result = solver.numSquares(17)
+        XCTAssertEqual(result, 2)
+    }
+
     func test3(){
         let result = solver.numSquares(43)
         XCTAssertEqual(result, 3)

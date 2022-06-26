@@ -1,42 +1,46 @@
+// https://leetcode.com/problems/shortest-path-in-binary-matrix/submissions/
+
 class Solution {
     func shortestPathBinaryMatrix(_ grid: [[Int]]) -> Int {
-        if grid[0][0] != 0{
+        if grid[0][0] == 1{
             return -1
         }
         
         var grid = grid
-        let m = grid.count // row
-        let n = grid[0].count // column
-        var q: [(Int, Int)] = [] // Queue (pair)
-        q.append((0, 0))
+        
+        let row = grid.count
+        let column = grid[0].count
+        var queue: [(Int, Int)] = [(0, 0)]
         var step = 0
         
-        while !q.isEmpty{
+        while !queue.isEmpty{
             step += 1
-            var size = q.count // ??
-            while(size > 0){
-                let top = q.removeFirst()
-                let r = top.0
-                let c = top.1
+            var size = queue.count
+            
+            while size > 0{
+                let firstMove = queue.removeFirst()
+                let rowDirection = firstMove.0
+                let colDirection = firstMove.1
                 
-                if r == m-1 && c == n-1{ // reach the end
+                if rowDirection == row-1 && colDirection == column - 1{
                     return step
                 }
                 
-                // one step each time (n-1) - (n) - (n+1)
-                for nr in max(0, r-1)...min(m-1, r+1){
-                    for nc in max(0, c-1)...min(n-1, c+1){
-                        if grid[nr][nc] == 0{
-                            grid[nr][nc] = 1
-                            q.append((nr, nc))
+                for rowNextMove in max(0, rowDirection-1)...min(rowDirection+1, row-1){
+                    for colNextMove in max(0, colDirection-1)...min(colDirection+1, column-1){
+                        if grid[rowNextMove][colNextMove] == 0{
+                            grid[rowNextMove][colNextMove] = 1
+                            queue.append((rowNextMove, colNextMove))
                         }
                     }
                 }
+                
                 size -= 1
             }
         }
         
         return -1
+
     }
 }
 
