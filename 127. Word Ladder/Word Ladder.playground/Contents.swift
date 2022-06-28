@@ -1,56 +1,65 @@
+// abcdefghijklmnopqrstvuwxyz
+
 class Solution {
     func ladderLength(_ beginWord: String, _ endWord: String, _ wordList: [String]) -> Int {
-        var res = false
-        var count = 1
-        var wordSet = Set(wordList)
         var queue: [String] = [beginWord]
+        var wordSet = Set(wordList)
+        var count = 1
         
-    loop:
-        while queue.count > 0{
+        while !queue.isEmpty {
+
             count += 1
-            var list: [String] = []
+            var lists = [String]()
             
-            for word in queue{
-                list += nextWords(word, &wordSet)
-                if list.contains(endWord){
-                    res = true
-                    break loop
+            for _ in 0..<queue.count{
+                let currentWord = queue.removeFirst()
+                lists += nextWords(currentWord, &wordSet)
+                
+                if lists.contains(endWord){
+                    return count
                 }
             }
-            
-            queue = list
+     
+            queue = lists
         }
         
+        return 0
         
-        return res == true ? count : 0
     }
     
     func nextWords(_ word: String, _ wordSet: inout Set<String>) -> [String]{
-        var res: [String] = []
-        var chars = Array(word) // "hit" -> "hot"
-        let alphabeta = Array("abcdefghijklmnopqrstvuwxyz")
+        let alphabet = Array("abcdefghijklmnopqrstvuwxyz")
+        var chars = Array(word)
+        var results = [String]()
         
-        // 0, h
-        // 1, i
-        // 2, t
+        // Loop through every char in the current word
         for (i, char) in chars.enumerated(){
-            for c in alphabeta{
-                if c == char {
+            // Match every char in alphabet
+            for letter in alphabet{
+                if char == letter{
                     continue
                 }else{
-                    chars[i] = c
-                    let string = String(chars)
-                    if wordSet.contains(string){
-                        res.append(string)
-                        wordSet.remove(string)
+                    chars[i] = letter
+                    let newString = String(chars)
+                    if wordSet.contains(newString){
+                        results.append(newString)
+                        wordSet.remove(newString)
                     }
+                    
                 }
-                
-                chars[i] = char
-                
             }
+            
+            // restore the original chars after each iteration
+            chars[i] = char
+            
         }
         
-        return res
+        return results
+        
+        
     }
+    
 }
+
+let solver = Solution()
+solver.ladderLength("red", "tax", ["ted","tex","red","tax","tad","den","rex","pee"])
