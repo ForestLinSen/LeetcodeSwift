@@ -3,15 +3,13 @@ class Solution {
         
         var count = 0
         var grid = isConnected
+        var visited = Array(repeating: false, count: grid.count)
         
-        for i in 0..<grid.count{
-            for j in 0..<grid[0].count{
-                if grid[i][j] == 0{
-                    continue
-                }else{
-                    count += 1
-                    dfs(&grid, i, j)
-                }
+        
+        for i in 0..<grid[0].count{
+            if !visited[i]{
+                dfs(&grid, i, &visited)
+                count += 1
             }
         }
         
@@ -19,18 +17,13 @@ class Solution {
         return count
     }
     
-    func dfs(_ grid: inout [[Int]], _ i: Int, _ j: Int){
-        if i < 0 || j < 0 || i >= grid.count || j >= grid[0].count || grid[i][j] != 1{
-            return
+    func dfs(_ grid: inout [[Int]], _ i: Int, _ visited: inout [Bool]){
+        for j in 0..<grid[i].count{
+            if grid[i][j] == 1 && !visited[j]{
+                visited[j] = true
+                dfs(&grid, j, &visited)
+            }
         }
-        
-        grid[i][j] = 0
-        grid[j][i] = 0
-        
-        dfs(&grid, i-1, j)
-        dfs(&grid, i+1, j)
-        dfs(&grid, i, j-1)
-        dfs(&grid, i, j+1)
     }
 }
 
@@ -57,3 +50,4 @@ class Test: XCTestCase{
 }
 
 
+Test.defaultTestSuite.run()
