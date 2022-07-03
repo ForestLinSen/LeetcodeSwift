@@ -2,53 +2,49 @@
 
 class Solution {
     func solve(_ board: inout [[Character]]) {
-        let rows = board.count
-        let columns = board[0].count
         
-        guard rows >= 3, columns >= 3 else { return }
+        guard board.count >= 3, board[0].count >= 3 else { return }
         
-        func capture(_ row: Int, _ column: Int){
-            if row < 0 || row >= rows || column < 0 || column >= columns || board[row][column] != "O"{
+        func dfs(_ i: Int, _ j: Int){
+            if i<0 || j<0 || i>=board.count || j>=board[0].count || board[i][j] != "O" {
                 return
             }
             
-            board[row][column] = "T"
-            
-            // using the mark symbol "T"
-            let deltas: [(Int, Int)] = [(1, 0), (-1, 0), (0, 1), (0, -1)]
-            
-            for delta in deltas {
-                let newRow = row + delta.0
-                let newColumn = column + delta.1
-                capture(newRow, newColumn)
-            }
+            board[i][j] = "M"
+            dfs(i+1, j)
+            dfs(i-1, j)
+            dfs(i, j+1)
+            dfs(i, j-1)
         }
         
-        // 1. (DFS) Capture unsurrounded regions (O -> T)
-        for column in 0..<columns{
-            capture(0, column)
-            capture(rows-1, column)
+        // Mark from the edge
+        // row
+        for col in 0..<board[0].count{
+            dfs(0, col) // first row
+            dfs(board.count-1, col) // last row
         }
         
-        for row in 0..<rows{
-            capture(row, 0)
-            capture(row, columns-1)
+        // column
+        for row in 0..<board.count{
+            dfs(row, 0)
+            dfs(row, board[0].count-1)
         }
         
-        // 2. Capture surrounded regions (O -> X)
-        for row in 1..<(rows-1){
-            for column in 1..<(columns-1){
-                if board[row][column] == "O"{
-                    board[row][column] = "X"
+        
+        // Turn the remaining O into an X
+        for i in 0..<board.count-1{
+            for j in 0..<board[0].count-1{
+                if board[i][j] == "O"{
+                    board[i][j] = "X"
                 }
             }
         }
         
-        // 3. Uncapture surrounded regions (T -> O)
-        for row in 0..<rows{
-            for column in 0..<columns{
-                if board[row][column] == "T"{
-                    board[row][column] = "O"
+        // Turn the marked M into O
+        for i in 0..<board.count{
+            for j in 0..<board[0].count{
+                if board[i][j] == "M"{
+                    board[i][j] = "O"
                 }
             }
         }
