@@ -2,21 +2,48 @@ import Foundation
 
 class Solution {
     func restoreIpAddresses(_ s: String) -> [String] {
-        var results = [String]()
+        if s.count > 12 || s.count < 4 { return [] }
         
-        func backTracking(_ count: Int, _ curr: String, _ remainInt: String){
-            if count == 4 && remainInt.isEmpty{
-                results.append(curr)
+        var chars = Array(s)
+        var res: [String] = []
+        
+        func backtrack(_ path: [Int], _ length: Int){
+            if path.count == 4{
+                if length == chars.count{
+                    var string = ""
+                    for (i, c) in chars.enumerated(){
+                        string += String(c)
+                        if i < length - 1 && path.contains(i+1){
+                            string += "."
+                        }
+                    }
+                    
+                    res.append(string)
+                }
+                
                 return
             }
             
-            if remainInt.count > 3{
-                for i in 0..<3{
-                    let curr = curr + "." +
+            var path = path
+            for i in 1..<4{
+                if i + length > chars.count { break }
+                
+                if i >= 2{
+                    if Int(String(chars[length]))! == 0 { break }
                 }
+                
+                if i == 3{
+                    if Int(String(chars[length]) + String(chars[length + 1]) + String(chars[length + 2]))! > 255 { break }
+                }
+                
+                path.append(length + i)
+                backtrack(path, length+i)
+                path.remove(at: path.count - 1)
             }
-            
-            
         }
+        
+        backtrack([], 0)
+        return res
+        
     }
 }
