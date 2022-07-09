@@ -1,14 +1,15 @@
 class Solution {
     func permuteUnique(_ nums: [Int]) -> [[Int]] {
-        
         if nums.count == 1 { return [nums] }
         
-        var results: Set<[Int]> = []
+        let nums = nums.sorted()
+        
+        var results: [[Int]] = []
         
         func backTracking(_ curr: [Int], _ remain: [Int]){
             
             if curr.count == nums.count{
-                results.insert(curr)
+                results.append(curr)
                 return
             }
             
@@ -16,6 +17,12 @@ class Solution {
             
             for i in 0..<remain.count{
                 var newRemain = remain
+                
+                if i != 0 && newRemain[i-1] == newRemain[i] {
+                    newRemain.remove(at: i)
+                    continue
+                }
+                
                 var curr = curr
                 curr.append(newRemain.remove(at: i))
                 backTracking(curr, newRemain)
@@ -25,11 +32,15 @@ class Solution {
         
         for i in 0..<nums.count{
             var remain = nums
+            if i != 0 && remain[i] == remain[i-1]{
+                remain.remove(at: i)
+                continue
+            }
             let curr = [remain.remove(at: i)]
             backTracking(curr, remain)
         }
         
-        return Array(results)
+        return results
     }
 }
 
