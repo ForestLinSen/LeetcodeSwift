@@ -35,6 +35,7 @@ class Solution{
             for j in 0..<board[0].count{
                 
                 if isFound { return true }
+                
                 if board[i][j] == word[0]{
                     dfs(0, i, j)
                 }
