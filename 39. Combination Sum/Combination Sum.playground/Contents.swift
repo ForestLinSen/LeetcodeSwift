@@ -1,3 +1,5 @@
+// https://stackoverflow.com/questions/67355764/why-do-we-pop-from-the-list-at-the-end-of-each-backtrack-iteration
+
 class Solution {
     func combinationSum(_ candidates: [Int], _ target: Int) -> [[Int]] {
         var results: [[Int]] = []
