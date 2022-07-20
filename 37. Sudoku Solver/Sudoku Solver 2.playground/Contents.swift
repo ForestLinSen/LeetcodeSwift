@@ -15,12 +15,15 @@
 
 
 class Solution {
+    
+
     func solveSudoku(_ board: inout [[Character]]) {
         guard board.count != 0 || board[0].count != 0 else { return }
         helper(&board)
     }
     
     private func helper(_ board: inout [[Character]]) -> Bool{
+     
         for row in 0..<board.count{
             for col in 0..<board[0].count where board[row][col] == "." {
                 for n in 1...9 where isValid(board, Character("\(n)"), row, col){
