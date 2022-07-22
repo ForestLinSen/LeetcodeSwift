@@ -1,5 +1,25 @@
 class Solution {
     func climbStairs(_ n: Int) -> Int {
+        var dp: [Int: Int] = [1: 1,
+                              2: 2]
+        
+        if let res = dp[n] { return res }
+        
+        for i in 3...n{
+            dp[i] = dp[i-1]! + dp[i-2]!
+        }
+        
+        return dp[n]!
+    }
+}
+
+let solver = Solution()
+solver.climbStairs(20)
+
+
+// MARK: - Backtracking
+class Solution2 {
+    func climbStairs(_ n: Int) -> Int {
         var count = 0
         
         func backtracking(_ sum: inout Int){
@@ -24,5 +44,4 @@ class Solution {
     }
 }
 
-let solver = Solution()
-solver.climbStairs(15)
+
