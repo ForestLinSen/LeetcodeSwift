@@ -5,7 +5,7 @@ class Solution {
         // [house1, house2, n, n+1, n+2]
         
         for num in nums{
-            var temp = max(num+house1, house2)
+            let temp = max(num+house1, house2)
             house1 = house2
             house2 = temp
             
