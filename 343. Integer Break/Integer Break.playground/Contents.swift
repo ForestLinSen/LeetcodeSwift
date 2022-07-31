@@ -2,7 +2,19 @@
 
 class Solution {
     func integerBreak(_ n: Int) -> Int {
-        return 0
+        var dp: [Int: Int] = [1:1]
+        
+        for num in 2...n{
+            dp[num] = (num == n ? 0 : num)
+            
+            for i in 1..<num{
+                let val = dp[i]! * dp[num - i]!
+                dp[num] = max(val, dp[num]!)
+            }
+        }
+        
+        
+        return dp[n]!
     }
     
     
@@ -30,4 +42,4 @@ class Solution {
 
 
 var solver = Solution()
-solver.integerBreakDfs(4)
+solver.integerBreak(4)
